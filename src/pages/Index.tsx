@@ -6,11 +6,14 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
+import FactionActivity from '@/components/FactionActivity';
 
 const Index = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('home');
 
   const newsItems = [
     {
@@ -69,11 +72,11 @@ const Index = () => {
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#home" className="hover:text-primary transition-colors">Главная</a>
-            <a href="#news" className="hover:text-primary transition-colors">Новости</a>
-            <a href="#start" className="hover:text-primary transition-colors">Как начать</a>
-            <a href="#forum" className="hover:text-primary transition-colors">Форум</a>
-            <a href="#rules" className="hover:text-primary transition-colors">Правила</a>
+            <button onClick={() => setActiveTab('home')} className={`hover:text-primary transition-colors ${activeTab === 'home' ? 'text-primary' : ''}`}>Главная</button>
+            <button onClick={() => setActiveTab('news')} className={`hover:text-primary transition-colors ${activeTab === 'news' ? 'text-primary' : ''}`}>Новости</button>
+            <button onClick={() => setActiveTab('factions')} className={`hover:text-primary transition-colors ${activeTab === 'factions' ? 'text-primary' : ''}`}>Фракции</button>
+            <button onClick={() => setActiveTab('forum')} className={`hover:text-primary transition-colors ${activeTab === 'forum' ? 'text-primary' : ''}`}>Форум</button>
+            <button onClick={() => setActiveTab('rules')} className={`hover:text-primary transition-colors ${activeTab === 'rules' ? 'text-primary' : ''}`}>Правила</button>
           </div>
 
           <div className="flex items-center space-x-4">
@@ -140,140 +143,145 @@ const Index = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/img/7cb9420d-68d4-4d23-91ff-8986d8cc79e9.jpg" 
-            alt="Miami RP Background" 
-            className="w-full h-full object-cover opacity-40"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/40 to-background/80"></div>
-        </div>
-        
-        <div className="relative z-10 text-center space-y-8 px-4">
-          <h1 className="text-6xl md:text-8xl font-bold neon-text animate-fade-in">
-            MIAMI RP
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-            Окунись в мир роскоши и преступности в лучшем GTA 5 RP сервере
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8 py-4 hover:neon-glow transition-all duration-300">
-              <Icon name="Play" className="mr-2 h-5 w-5" />
-              Начать играть
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-4 hover:neon-glow transition-all duration-300">
-              <Icon name="Download" className="mr-2 h-5 w-5" />
-              Скачать лаунчер
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 neon-text">Почему Miami RP?</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="cyber-border hover:neon-glow transition-all duration-300">
-                <CardHeader className="text-center">
-                  <Icon name={feature.icon} className="h-12 w-12 mx-auto mb-4 text-primary" />
-                  <CardTitle>{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground text-center">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* News Section */}
-      <section id="news" className="py-20 px-4 bg-card">
-        <div className="container mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 neon-text">Последние новости</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {newsItems.map((news) => (
-              <Card key={news.id} className="cyber-border hover:neon-glow transition-all duration-300">
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge variant="secondary">{news.category}</Badge>
-                    <span className="text-sm text-muted-foreground">{news.date}</span>
-                  </div>
-                  <CardTitle className="text-xl">{news.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">{news.description}</CardDescription>
-                  <Button variant="link" className="mt-4 p-0 h-auto text-primary">
-                    Читать далее →
+      {/* Content Tabs */}
+      <div className="pt-20">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsContent value="home">
+            {/* Hero Section */}
+            <section className="relative h-screen flex items-center justify-center overflow-hidden">
+              <div className="absolute inset-0 z-0">
+                <img 
+                  src="/img/7cb9420d-68d4-4d23-91ff-8986d8cc79e9.jpg" 
+                  alt="Miami RP Background" 
+                  className="w-full h-full object-cover opacity-40"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/40 to-background/80"></div>
+              </div>
+              
+              <div className="relative z-10 text-center space-y-8 px-4">
+                <h1 className="text-6xl md:text-8xl font-bold neon-text animate-fade-in">
+                  MIAMI RP
+                </h1>
+                <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
+                  Окунись в мир роскоши и преступности в лучшем GTA 5 RP сервере
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button size="lg" className="text-lg px-8 py-4 hover:neon-glow transition-all duration-300">
+                    <Icon name="Play" className="mr-2 h-5 w-5" />
+                    Начать играть
                   </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How to Start Section */}
-      <section id="start" className="py-20 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 neon-text">Как начать играть</h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <Card className="cyber-border text-center">
-              <CardHeader>
-                <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
-                  1
+                  <Button size="lg" variant="outline" className="text-lg px-8 py-4 hover:neon-glow transition-all duration-300">
+                    <Icon name="Download" className="mr-2 h-5 w-5" />
+                    Скачать лаунчер
+                  </Button>
                 </div>
-                <CardTitle>Скачай лаунчер</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Загрузи официальный лаунчер Miami RP с нашего сайта</p>
-              </CardContent>
-            </Card>
-
-            <Card className="cyber-border text-center">
-              <CardHeader>
-                <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
-                  2
+              </div>
+            </section>
+            {/* Features Section */}
+            <section className="py-20 px-4">
+              <div className="container mx-auto">
+                <h2 className="text-4xl font-bold text-center mb-12 neon-text">Почему Miami RP?</h2>
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {features.map((feature, index) => (
+                    <Card key={index} className="cyber-border hover:neon-glow transition-all duration-300">
+                      <CardHeader className="text-center">
+                        <Icon name={feature.icon} className="h-12 w-12 mx-auto mb-4 text-primary" />
+                        <CardTitle>{feature.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-muted-foreground text-center">{feature.description}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
-                <CardTitle>Регистрация</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Создай аккаунт и пройди простую регистрацию на сервере</p>
-              </CardContent>
-            </Card>
+              </div>
+            </section>
+          </TabsContent>
 
-            <Card className="cyber-border text-center">
-              <CardHeader>
-                <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
-                  3
+          <TabsContent value="news">
+            <section className="py-20 px-4 bg-card min-h-screen">
+              <div className="container mx-auto">
+                <h2 className="text-4xl font-bold text-center mb-12 neon-text">Последние новости</h2>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {newsItems.map((news) => (
+                    <Card key={news.id} className="cyber-border hover:neon-glow transition-all duration-300">
+                      <CardHeader>
+                        <div className="flex items-center justify-between mb-2">
+                          <Badge variant="secondary">{news.category}</Badge>
+                          <span className="text-sm text-muted-foreground">{news.date}</span>
+                        </div>
+                        <CardTitle className="text-xl">{news.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <CardDescription className="text-base">{news.description}</CardDescription>
+                        <Button variant="link" className="mt-4 p-0 h-auto text-primary">
+                          Читать далее →
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
-                <CardTitle>Играй!</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Заходи на сервер и начинай свою историю в Майами</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+              </div>
+            </section>
+          </TabsContent>
 
-      {/* Forum Section */}
-      <section id="forum" className="py-20 px-4 bg-card">
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-8 neon-text">Форум сообщества</h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Общайся с игроками, делись опытом и находи новых друзей в нашем активном сообществе
-          </p>
-          <Button size="lg" className="hover:neon-glow transition-all duration-300">
-            <Icon name="MessageCircle" className="mr-2 h-5 w-5" />
-            Перейти на форум
-          </Button>
-        </div>
-      </section>
+          <TabsContent value="factions">
+            <div className="py-20 px-4 min-h-screen">
+              <div className="container mx-auto">
+                <FactionActivity />
+              </div>
+            </div>
+          <TabsContent value="forum">
+            <section className="py-20 px-4 bg-card min-h-screen">
+              <div className="container mx-auto text-center">
+                <h2 className="text-4xl font-bold mb-8 neon-text">Форум сообщества</h2>
+                <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                  Общайся с игроками, делись опытом и находи новых друзей в нашем активном сообществе
+                </p>
+                <Button size="lg" className="hover:neon-glow transition-all duration-300">
+                  <Icon name="MessageCircle" className="mr-2 h-5 w-5" />
+                  Перейти на форум
+                </Button>
+              </div>
+            </section>
+          </TabsContent>
+
+          <TabsContent value="rules">
+            <section className="py-20 px-4 min-h-screen">
+              <div className="container mx-auto">
+                <h2 className="text-4xl font-bold text-center mb-12 neon-text">Правила сервера</h2>
+                <div className="max-w-4xl mx-auto space-y-8">
+                  <Card className="cyber-border">
+                    <CardHeader>
+                      <CardTitle className="text-2xl">Общие правила</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p>1. Уважай других игроков и администрацию</p>
+                      <p>2. Запрещены читы, баги и эксплойты</p>
+                      <p>3. Обязательна игра в роли (RP)</p>
+                      <p>4. Запрещены оскорбления и мат в чате</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="cyber-border">
+                    <CardHeader>
+                      <CardTitle className="text-2xl">Правила RP</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p>1. Играй в соответствии с выбранной ролью</p>
+                      <p>2. Запрещен DeathMatch без RP причин</p>
+                      <p>3. Обязательно наличие микрофона</p>
+                      <p>4. Следуй командам администрации</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </section>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+
 
       {/* Footer */}
       <footer className="bg-background border-t border-border py-12 px-4">
